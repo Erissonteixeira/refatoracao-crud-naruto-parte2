@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ninja")
@@ -40,6 +42,10 @@ public class NinjaEntity {
     @Column(name = "criado_em", nullable = false)
     private LocalDateTime criadoEm;
 
+    @ManyToMany
+    @JoinTable(name = "ninja_jutsu", joinColumns = @JoinColumn(name = "ninja_id"), inverseJoinColumns = @JoinColumn(name = "jutsu_id"))
+    private Set<JutsuEntity> justus = new HashSet<>();
+
     protected NinjaEntity() {
     }
 
@@ -57,5 +63,9 @@ public class NinjaEntity {
 
     public boolean temChakraSuficiente(int custo) {
         return this.chakra >= custo;
+    }
+
+    public void adicionarJutsu(JutsuEntity jutsu) {
+        this.justus.add(jutsu);
     }
 }
