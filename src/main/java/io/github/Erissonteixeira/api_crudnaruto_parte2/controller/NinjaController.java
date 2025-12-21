@@ -40,4 +40,9 @@ public class NinjaController {
     ) {
         return service.atualizar(id, dto);
     }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id) {
+        service.deletar(id);
+    }
 }
