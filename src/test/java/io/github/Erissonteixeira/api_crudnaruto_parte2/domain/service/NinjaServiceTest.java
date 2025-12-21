@@ -4,8 +4,7 @@ import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.contract.Ninja;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.entity.NinjaEntity;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NinjaServiceTest {
 
@@ -43,5 +42,14 @@ public class NinjaServiceTest {
 
         assertNotNull(resultado);
         assertEquals("Itachi", ninja.getNome());
+    }
+
+    @Test
+    void deveLancarExececaoQuandoTipoInvalido() {
+
+        NinjaService service = new NinjaService();
+        NinjaEntity ninja = new NinjaEntity("Sasuke", "Konoha", 18);
+
+        assertThrows(IllegalArgumentException.class, () -> service.executarAtaque("invalido", ninja));
     }
 }
