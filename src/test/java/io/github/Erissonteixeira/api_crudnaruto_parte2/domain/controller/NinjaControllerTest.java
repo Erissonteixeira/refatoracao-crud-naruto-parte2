@@ -18,6 +18,7 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -112,5 +113,14 @@ class NinjaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Kakashi"))
                 .andExpect(jsonPath("$.idade").value(30));
+    }
+
+    @Test
+    void deletarNinja_deveRetornarStatus200() throws Exception {
+
+        doNothing().when(service).deletar(1L);
+
+        mockMvc.perform(delete("/api/v1/ninjas/1"))
+                .andExpect(status().isOk());
     }
 }
