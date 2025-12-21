@@ -1,6 +1,7 @@
 package io.github.Erissonteixeira.api_crudnaruto_parte2.domain.service;
 
-import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.contract.Ninja;
+import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaRequestDto;
+import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaResponseDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.entity.NinjaEntity;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.repository.NinjaRepository;
 import org.junit.jupiter.api.Test;
@@ -9,10 +10,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class NinjaServiceTest {
+class NinjaServiceTest {
 
     @Mock
     private NinjaRepository repository;
@@ -21,43 +29,44 @@ public class NinjaServiceTest {
     private NinjaService service;
 
     @Test
-    void deveExecutarAtaqueComNinjutsu() {
+    void deveCriarNinja() {
+        NinjaRequestDto dto = new NinjaRequestDto("Naruto", "Konoha", 17);
+        NinjaEntity entity = new NinjaEntity("Naruto", "Konoha", 17);
 
-        NinjaEntity ninja = new NinjaEntity("Naruto", "Konoha", 17);
+        when(repository.save(any())).thenReturn(entity);
 
-        Ninja resultado = service.executarAtaque("ninjutsu", ninja);
+        NinjaResponseDto response = service.criar(dto);
 
-        assertNotNull(resultado);
-        assertEquals("Naruto", ninja.getNome());
+        assertEquals("Naruto", response.getNome());
     }
 
     @Test
-    void deveExecutarAtaqueComTaijutsu() {
+    void deveListarNinjas() {
+        when(repository.findAll()).thenReturn(List.of(
+                new NinjaEntity("Naruto", "Konoha", 17)
+        ));
 
-        NinjaEntity ninja = new NinjaEntity("Rock Lee", "Konoha", 16);
+        List<NinjaResponseDto> lista = service.listar();
 
-        Ninja resultado = service.executarAtaque("taijutsu", ninja);
-
-        assertNotNull(resultado);
-        assertEquals("Rock Lee", ninja.getNome());
+        assertFalse(lista.isEmpty());
     }
 
     @Test
-    void deveExecutarAtaqueComGenjutsu() {
+    void deveBuscarPorId() {
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(new NinjaEntity("Sasuke", "Konoha", 18)));
 
-        NinjaEntity ninja = new NinjaEntity("Itachi", "Konoha", 21);
+        NinjaResponseDto response = service.buscarPorId(1L);
 
-        Ninja resultado = service.executarAtaque("genjutsu", ninja);
-
-        assertNotNull(resultado);
-        assertEquals("Itachi", ninja.getNome());
+        assertEquals("Sasuke", response.getNome());
     }
 
     @Test
-    void deveLancarExececaoQuandoTipoInvalido() {
+    void deveDeletarNinja() {
+        Long id = 1L;
 
-        NinjaEntity ninja = new NinjaEntity("Sasuke", "Konoha", 18);
+        service.deletar(id);
 
-        assertThrows(IllegalArgumentException.class, () -> service.executarAtaque("invalido", ninja));
+        verify(repository).deleteById(id);
     }
 }
