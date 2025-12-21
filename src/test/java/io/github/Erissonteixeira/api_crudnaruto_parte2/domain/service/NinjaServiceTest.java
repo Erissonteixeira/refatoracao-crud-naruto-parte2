@@ -22,7 +22,8 @@ public class NinjaServiceTest {
     }
 
     @Test
-    void deveExecutarAtaqueComTaijutsu(){
+    void deveExecutarAtaqueComTaijutsu() {
+
         NinjaService service = new NinjaService();
         NinjaEntity ninja = new NinjaEntity("Rock Lee", "Konoha", 16);
 
@@ -30,5 +31,17 @@ public class NinjaServiceTest {
 
         assertNotNull(resultado);
         assertEquals("Rock Lee", ninja.getNome());
+    }
+
+    @Test
+    void deveExecutarAtaqueComGenjutsu() {
+
+        NinjaService service = new NinjaService();
+        NinjaEntity ninja = new NinjaEntity("Itachi", "Konoha", 21);
+
+        Ninja resultado = service.executarAtaque("genjutsu", ninja);
+
+        assertNotNull(resultado);
+        assertEquals("Itachi", ninja.getNome());
     }
 }
