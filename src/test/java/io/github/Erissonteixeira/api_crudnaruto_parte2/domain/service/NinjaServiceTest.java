@@ -20,4 +20,15 @@ public class NinjaServiceTest {
         assertNotNull(resultado);
         assertEquals("Naruto", ninja.getNome());
     }
+
+    @Test
+    void deveExecutarAtaqueComTaijutsu(){
+        NinjaService service = new NinjaService();
+        NinjaEntity ninja = new NinjaEntity("Rock Lee", "Konoha", 16);
+
+        Ninja resultado = service.executarAtaque("taijutsu", ninja);
+
+        assertNotNull(resultado);
+        assertEquals("Rock Lee", ninja.getNome());
+    }
 }
