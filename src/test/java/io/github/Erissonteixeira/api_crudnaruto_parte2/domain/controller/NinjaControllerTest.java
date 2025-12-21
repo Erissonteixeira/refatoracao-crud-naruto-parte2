@@ -74,4 +74,18 @@ class NinjaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nome").value("Naruto"));
     }
+
+    @Test
+    void buscarPorId_deveRetornarNinja() throws Exception {
+
+        when(service.buscarPorId(1L)).thenReturn(
+                new NinjaResponseDto(
+                        1L, "Sasuke", "Konoha", 18, 100, Set.of(), LocalDateTime.now()
+                )
+        );
+
+        mockMvc.perform(get("/api/v1/ninjas/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Sasuke"));
+    }
 }
