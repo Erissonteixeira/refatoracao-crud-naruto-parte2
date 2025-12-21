@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -87,5 +87,30 @@ class NinjaControllerTest {
         mockMvc.perform(get("/api/v1/ninjas/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Sasuke"));
+    }
+
+    @Test
+    void atualizarNinja_deveRetornarNinjaAtualizado() throws Exception {
+
+        when(service.atualizar(anyLong(), any(NinjaRequestDto.class))).thenReturn(
+                new NinjaResponseDto(
+                        1L, "Kakashi", "Konoha", 30, 100, Set.of(), LocalDateTime.now()
+                )
+        );
+
+        String jsonRequest = """
+                {
+                  "nome": "Kakashi",
+                  "vila": "Konoha",
+                  "idade": 30
+                }
+                """;
+
+        mockMvc.perform(put("/api/v1/ninjas/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Kakashi"))
+                .andExpect(jsonPath("$.idade").value(30));
     }
 }
