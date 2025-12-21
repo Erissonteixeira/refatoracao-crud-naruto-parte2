@@ -27,4 +27,9 @@ public class NinjaController {
     public List<NinjaResponseDto> listar() {
         return service.listar();
     }
+
+    @GetMapping("/{id}")
+    public NinjaResponseDto buscarPorId(@PathVariable Long id) {
+        return service.buscarPorId(id);
+    }
 }
