@@ -32,4 +32,12 @@ public class NinjaController {
     public NinjaResponseDto buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
+
+    @PutMapping("/{id}")
+    public NinjaResponseDto atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid NinjaRequestDto dto
+    ) {
+        return service.atualizar(id, dto);
+    }
 }
