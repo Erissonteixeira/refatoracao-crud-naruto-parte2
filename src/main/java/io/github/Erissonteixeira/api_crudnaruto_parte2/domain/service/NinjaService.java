@@ -5,8 +5,17 @@ import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.behavior.NinjaDeNi
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.behavior.NinjaDeTaijutsu;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.contract.Ninja;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.entity.NinjaEntity;
+import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.repository.NinjaRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class NinjaService {
+
+    private final NinjaRepository repository;
+
+    public NinjaService(NinjaRepository repository) {
+        this.repository = repository;
+    }
 
     public Ninja executarAtaque(String tipo, NinjaEntity ninja) {
 
