@@ -5,44 +5,35 @@ import io.github.Erissonteixeira.api_crudnaruto_parte2.controller.NinjaControlle
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaRequestDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaResponseDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.service.NinjaService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(NinjaController.class)
 class NinjaControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private NinjaService service;
 
-    @InjectMocks
-    private NinjaController controller;
-
+    @Autowired
     private ObjectMapper objectMapper;
-
-    @BeforeEach
-    void setup() {
-
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        objectMapper = new ObjectMapper();
-    }
 
     @Test
     void criarNinja_deveRetornarNinjaCriado() throws Exception {
@@ -53,16 +44,34 @@ class NinjaControllerTest {
 
         when(service.criar(any(NinjaRequestDto.class))).thenReturn(response);
 
-        String jsonRequest = objectMapper.writeValueAsString(
-                java.util.Map.of("nome", "Naruto", "vila", "Konoha", "idade", 17)
-        );
+        String jsonRequest = """
+                {
+                  "nome": "Naruto",
+                  "vila": "Konoha",
+                  "idade": 17
+                }
+                """;
 
-        mockMvc.perform(post("/ninjas")
+        mockMvc.perform(post("/api/v1/ninjas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Naruto"))
                 .andExpect(jsonPath("$.vila").value("Konoha"))
                 .andExpect(jsonPath("$.idade").value(17));
+    }
+
+    @Test
+    void listarNinjas_deveRetornarLista() throws Exception {
+
+        when(service.listar()).thenReturn(List.of(
+                new NinjaResponseDto(
+                        1L, "Naruto", "Konoha", 17, 100, Set.of(), LocalDateTime.now()
+                )
+        ));
+
+        mockMvc.perform(get("/api/v1/ninjas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nome").value("Naruto"));
     }
 }
