@@ -45,7 +45,7 @@ public class NinjaServiceTest {
     }
 
     @Test
-    void deveLancarExececaoQuandoTipoInvalido() {
+    void deveLancarExececaoQuandoTipoInvalido(){
 
         NinjaService service = new NinjaService();
         NinjaEntity ninja = new NinjaEntity("Sasuke", "Konoha", 18);
