@@ -1,12 +1,12 @@
 package io.github.Erissonteixeira.api_crudnaruto_parte2.domain.service;
 
-import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.behavior.NinjaDeGenjutsu;
-import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.behavior.NinjaDeNinjutsu;
-import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.behavior.NinjaDeTaijutsu;
-import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.contract.Ninja;
+import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaRequestDto;
+import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaResponseDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.entity.NinjaEntity;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.repository.NinjaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NinjaService {
@@ -17,22 +17,58 @@ public class NinjaService {
         this.repository = repository;
     }
 
-    public Ninja executarAtaque(String tipo, NinjaEntity ninja) {
+    public NinjaResponseDto criar(NinjaRequestDto dto) {
+        NinjaEntity ninja = new NinjaEntity(
+                dto.getNome(),
+                dto.getVila(),
+                dto.getIdade()
+        );
 
-        Ninja comportamento = escolherComportamento(tipo, ninja);
-
-        comportamento.usarJutsu();
-        comportamento.desviar();
-
-        return comportamento;
+        NinjaEntity salvo = repository.save(ninja);
+        return toResponse(salvo);
     }
 
-    private Ninja escolherComportamento(String tipo, NinjaEntity ninja) {
-        return switch (tipo.toUpperCase()) {
-            case "TAIJUTSU" -> new NinjaDeTaijutsu(ninja);
-            case "NINJUTSU" -> new NinjaDeNinjutsu(ninja);
-            case "GENJUTSU" -> new NinjaDeGenjutsu(ninja);
-            default -> throw new IllegalArgumentException("Tipo de ninja inválido");
-        };
+    public List<NinjaResponseDto> listar() {
+        return repository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public NinjaResponseDto buscarPorId(Long id) {
+        NinjaEntity ninja = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ninja não encontrado"));
+
+        return toResponse(ninja);
+    }
+
+    public NinjaResponseDto atualizar(Long id, NinjaRequestDto dto) {
+        NinjaEntity ninja = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ninja não encontrado"));
+
+        ninja = new NinjaEntity(
+                dto.getNome(),
+                dto.getVila(),
+                dto.getIdade()
+        );
+
+        NinjaEntity atualizado = repository.save(ninja);
+        return toResponse(atualizado);
+    }
+
+    public void deletar(Long id) {
+        repository.deleteById(id);
+    }
+
+    private NinjaResponseDto toResponse(NinjaEntity ninja) {
+        return new NinjaResponseDto(
+                ninja.getId(),
+                ninja.getNome(),
+                ninja.getVila(),
+                ninja.getIdade(),
+                ninja.getChakra(),
+                ninja.getJustus().stream().map(j -> j.getNome()).collect(java.util.stream.Collectors.toSet()),
+                ninja.getCriadoEm()
+        );
     }
 }
