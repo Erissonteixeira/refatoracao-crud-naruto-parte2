@@ -33,6 +33,8 @@ public class NinjaController {
         return service.criar(dto);
     }
 
+    @Operation(summary = "Listar todos os ninjas cadastrados")
+    @ApiResponse(responseCode = "200", description = "Lista de ninjas retomada com sucesso")
     @GetMapping
     public List<NinjaResponseDto> listar() {
         return service.listar();
