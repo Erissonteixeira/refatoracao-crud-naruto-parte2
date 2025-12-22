@@ -50,6 +50,12 @@ public class NinjaController {
         return service.buscarPorId(id);
     }
 
+    @Operation(summary = "Atualizar um ninja pelo ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ninja atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Ninja não encontrado")
+    })
     @PutMapping("/{id}")
     public NinjaResponseDto atualizar(
             @PathVariable Long id,
