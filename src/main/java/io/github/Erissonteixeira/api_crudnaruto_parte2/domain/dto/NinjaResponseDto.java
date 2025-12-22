@@ -8,6 +8,7 @@ import java.util.Set;
 @Schema(name = "NinjaResponseDto", description = "DTO usado para retorno de dados de um ninja")
 public class NinjaResponseDto {
 
+    @Schema(description = "Identificador único do ninja", example = "1")
     private Long id;
     private String nome;
     private String vila;
