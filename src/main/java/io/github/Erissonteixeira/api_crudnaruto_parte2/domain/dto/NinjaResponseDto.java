@@ -16,6 +16,7 @@ public class NinjaResponseDto {
     private String vila;
     @Schema(description = "Idade do ninja", example = "17")
     private Integer idade;
+    @Schema(description = "Quantidade de chakra do ninja", example = "100")
     private Integer chakra;
     private Set<String> jutsus;
     private LocalDateTime criadoEm;
