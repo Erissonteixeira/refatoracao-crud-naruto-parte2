@@ -14,6 +14,7 @@ public class NinjaRequestDto {
     @Size(max = 50, message = "Vila deve ter no máximo 50 caracteres")
     private String vila;
 
+    @Schema(description = "Idade do ninja", example = "17", minimum = "0", maximum = "115")
     @NotNull(message = "Idade é obrigatória")
     @Min(value = 0, message = "Idade não pode ser negativa")
     @Max(value = 115, message = "Idade máxima permitida é 115 anos")
