@@ -9,6 +9,7 @@ public class NinjaRequestDto {
     @Size(max = 30, message = "Nome deve ter no máximo 30 caracteres")
     private String nome;
 
+    @Schema(description = "Vila de origem do ninja", example = "Konoha", maxLength = 50)
     @NotBlank(message = "Vila é obrigatória")
     @Size(max = 50, message = "Vila deve ter no máximo 50 caracteres")
     private String vila;
