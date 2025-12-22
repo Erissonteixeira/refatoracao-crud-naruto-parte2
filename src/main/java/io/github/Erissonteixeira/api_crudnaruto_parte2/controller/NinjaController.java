@@ -3,11 +3,13 @@ package io.github.Erissonteixeira.api_crudnaruto_parte2.controller;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaRequestDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaResponseDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.service.NinjaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Ninjas", description = "Endpoints responsáveis pelo gerenciamento de ninjas")
 @RestController
 @RequestMapping("api/v1/ninjas")
 public class NinjaController {
