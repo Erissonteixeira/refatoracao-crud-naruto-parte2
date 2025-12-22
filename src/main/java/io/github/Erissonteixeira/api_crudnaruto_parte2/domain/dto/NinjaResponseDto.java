@@ -20,7 +20,7 @@ public class NinjaResponseDto {
     private Integer chakra;
     @Schema(description = "Lista de jutsus que o ninja possui", example = "[\"Rasengan\", \"Kage Bunshin\"]")
     private Set<String> jutsus;
-
+    @Schema(description = "Data e hora de criação do registro", example = "2025-12-22T17:12:09")
     private LocalDateTime criadoEm;
 
     public NinjaResponseDto(Long id, String nome, String vila, Integer idade, Integer chakra, Set<String> jutsus, LocalDateTime criadoEm) {
