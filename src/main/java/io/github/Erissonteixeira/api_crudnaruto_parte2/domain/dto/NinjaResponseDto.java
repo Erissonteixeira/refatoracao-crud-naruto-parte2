@@ -12,6 +12,7 @@ public class NinjaResponseDto {
     private Long id;
     @Schema(description = "Nome do ninja", example = "Naruto Uzumaki")
     private String nome;
+    @Schema(description = "Vila de origem do ninja", example = "Konoha")
     private String vila;
     private Integer idade;
     private Integer chakra;
