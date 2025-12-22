@@ -3,6 +3,9 @@ package io.github.Erissonteixeira.api_crudnaruto_parte2.controller;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaRequestDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto.NinjaResponseDto;
 import io.github.Erissonteixeira.api_crudnaruto_parte2.domain.service.NinjaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,11 @@ public class NinjaController {
         this.service = service;
     }
 
+    @Operation(summary = "Cadastrar um novo ninja")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ninja criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
     @PostMapping
     public NinjaResponseDto criar(@RequestBody @Valid NinjaRequestDto dto) {
         return service.criar(dto);
