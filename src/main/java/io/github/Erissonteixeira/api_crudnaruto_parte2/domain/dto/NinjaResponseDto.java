@@ -1,8 +1,11 @@
 package io.github.Erissonteixeira.api_crudnaruto_parte2.domain.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Schema(name = "NinjaResponseDto", description = "DTO usado para retorno de dados de um ninja")
 public class NinjaResponseDto {
 
     private Long id;
