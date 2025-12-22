@@ -64,6 +64,11 @@ public class NinjaController {
         return service.atualizar(id, dto);
     }
 
+    @Operation(summary = "Deletar um ninja pelo ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ninja deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Ninja não encontrado")
+    })
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         service.deletar(id);
