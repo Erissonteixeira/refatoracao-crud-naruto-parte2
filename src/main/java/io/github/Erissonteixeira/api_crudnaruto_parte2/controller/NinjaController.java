@@ -40,6 +40,11 @@ public class NinjaController {
         return service.listar();
     }
 
+    @Operation(summary = "Buscar um ninja pelo ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ninja encontrado"),
+            @ApiResponse(responseCode = "404", description = "Ninja não encontrado")
+    })
     @GetMapping("/{id}")
     public NinjaResponseDto buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
